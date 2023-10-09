@@ -1,0 +1,29 @@
+# Uses MiniMessage lib
+# https://docs.advntr.dev/minimessage/format.html
+MAIN:
+  PREFIX: "<gray>[<aqua>tPunishments<gray>]"
+  NO_PERMISSION: "<red>You don't have permission to use this command."
+  PLAYER_NOT_ONLINE: "<red>That player isn't online!"
+  HELP: "<aqua>This server is running tPunishments v%version%<newline>Developed via heart by TehSteel <red>♥"
+  RELOAD: "<green>Plugin has been successfully reloaded"
+BAN:
+  USAGE: "<red>Correct Usage: /ban <player> <time> <reason>"
+  ALREADY_BANNED: "<red>That player is already banned!"
+  NOT_BANNED: "<red>That player is not banned!"
+  BROADCAST: "<red>%player% has banned %target% for %reason%"
+  BAN_MESSAGE_PERM: "<red>You've been permanently from X<newline>You've been banned for %reason%<newline>Ban ID: %banid%"
+  BAN_MESSAGE_TEMP: "<red>You've been temporarily banned for %time% from X<newline>You've been banned for %reason%<newline>Ban ID: %banid%"
+  UNBAN_USAGE: "<red>Correct Usage: /unban <player> <time> <reason>"
+  UNBAN_BROADCAST: "<red>%player% has unbanned %target% for %reason%"
+KICK:
+  USAGE: "<red>Correct Usage: /kick <player> <time> <reason>"
+  BROADCAST: "<red>%player% has kicked %target% for %reason%"
+  MESSAGE: "<red>You've been kicked from X<newline>You've been kicked for %reason%<newline>Kick ID: %kickid%"
+MUTE:
+  USAGE: "<red>Correct Usage: /mute <player> <time> <reason>"
+  ALREADY_MUTED: "<red>That player is already muted!"
+  NOT_MUTED: "<red>That player is not muted!"
+  BROADCAST: "<red>%player% has muted %target% for %reason%"
+  MUTED: "<red>You're muted for %reason% expries in %time%<newline>Mute Id: %muteid%"
+  UNMUTE_USAGE: "<red>Correct Usage: /mute <player> <time> <reason>"
+  UNMUTE_BROADCAST: "<red>%player% has unmuted %target% for %reason%"
