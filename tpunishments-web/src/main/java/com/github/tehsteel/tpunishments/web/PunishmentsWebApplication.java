@@ -10,10 +10,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class, UserDetailsServiceAutoConfiguration.class})
 @ComponentScan
 @EnableMongoRepositories
+@RestController
 public class PunishmentsWebApplication {
 
 
@@ -23,9 +28,14 @@ public class PunishmentsWebApplication {
 	public static void main(final String[] args) {
 		new PunishmentsWebApplication().startApp(args);
 	}
-	
+
 	private void startApp(final String[] args) {
 		SpringApplication.run(PunishmentsWebApplication.class, args);
+	}
+
+	@GetMapping("/test")
+	public ResponseEntity<String> testRequest() {
+		return new ResponseEntity<>("OK", HttpStatus.OK);
 	}
 
 	@Bean

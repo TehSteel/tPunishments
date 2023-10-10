@@ -4,6 +4,7 @@ import com.github.tehsteel.tpunishments.plugin.command.PunishmentCommand;
 import com.github.tehsteel.tpunishments.plugin.command.punishment.*;
 import com.github.tehsteel.tpunishments.plugin.listener.PlayerListener;
 import com.github.tehsteel.tpunishments.plugin.punishment.PunishmentManager;
+import com.github.tehsteel.tpunishments.plugin.report.ReportManager;
 import com.github.tehsteel.tpunishments.plugin.util.ConsoleUtil;
 import com.github.tehsteel.tpunishments.plugin.util.CustomConfig;
 import lombok.Getter;
@@ -15,6 +16,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,6 +30,7 @@ public final class PunishmentPlugin extends JavaPlugin {
 	@Getter private static PunishmentPlugin instance;
 
 	@Getter private PunishmentManager punishmentManager;
+	@Getter private ReportManager reportManager;
 	@Getter private CustomConfig settingsConfig, messagesConfig;
 
 	@Override
@@ -31,11 +39,13 @@ public final class PunishmentPlugin extends JavaPlugin {
 
 		instance = this;
 
+
 		registerFiles();
 		registerManagers();
 		registerCommands();
 		registerListeners();
 
+		performTestRequest();
 	}
 
 	@Override
@@ -78,7 +88,6 @@ public final class PunishmentPlugin extends JavaPlugin {
 		ConsoleUtil.log("<green>Registered commands successfully in %s ms.</green>", (System.currentTimeMillis() - startTime));
 	}
 
-
 	private void registerListeners() {
 		ConsoleUtil.log("Registering events...");
 		final long startTime = System.currentTimeMillis();
@@ -91,6 +100,7 @@ public final class PunishmentPlugin extends JavaPlugin {
 
 	private void registerManagers() {
 		punishmentManager = new PunishmentManager();
+		reportManager = new ReportManager();
 
 		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
 			Constants.PAPI_ENABLED = true;
@@ -112,6 +122,35 @@ public final class PunishmentPlugin extends JavaPlugin {
 		} catch (final Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void performTestRequest() {
+		ConsoleUtil.log("Sending a test request...");
+
+		try {
+
+			final HttpClient client = HttpClient.newHttpClient();
+			final HttpRequest request = HttpRequest.newBuilder()
+					.uri(new URI(String.format("%s/test", Constants.WEBSITE)))
+					.GET()
+					.header("Content-Type", "application/json")
+					.header("X-API-KEY", Constants.API_KEY)
+					.timeout(Duration.ofSeconds(30))
+					.build();
+			final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+			if (response.statusCode() != 200) {
+				ConsoleUtil.log("<red>There was an error while sending the test request, Status Code: " + response.statusCode());
+				Bukkit.getPluginManager().disablePlugin(this);
+			} else {
+				ConsoleUtil.log("<green>The test request was sent successfully and received a response. Status Code: " + response.statusCode());
+
+			}
+		} catch (IOException | InterruptedException | URISyntaxException e) {
+			throw new RuntimeException(e);
+		}
+
+
 	}
 
 }
