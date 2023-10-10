@@ -71,8 +71,8 @@ public class ReportController {
 	}
 
 	@GetMapping("/get")
-	public ResponseEntity<Report> getReportById(@RequestParam final String reportId) {
-		return new ResponseEntity<>(reportService.getReportRepository().findByReportId(new ReportId(reportId)), HttpStatus.OK);
+	public ResponseEntity<Report> getReportById(@RequestParam final ReportId reportId) {
+		return new ResponseEntity<>(reportService.getReportRepository().findByReportId(reportId), HttpStatus.OK);
 	}
 
 	@GetMapping("/getAllReports")

@@ -67,6 +67,7 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- PAPI -->
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>

@@ -9,11 +9,8 @@ import com.google.common.cache.CacheBuilder;
 import lombok.Getter;
 import lombok.NonNull;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,12 +30,10 @@ public final class PunishmentManager {
 	 *
 	 * @param punishment The punishment object to be created.
 	 * @return A CompletableFuture containing the created punishment or the original punishment if creation fails.
-	 * @throws URISyntaxException   If the URI syntax is incorrect.
-	 * @throws IOException          If an IO error occurs.
-	 * @throws InterruptedException If the operation is interrupted.
+	 * @throws Exception If any exception happens.
 	 */
-	public CompletableFuture<Punishment> createPunishment(final Punishment punishment) throws URISyntaxException, IOException, InterruptedException {
-		final Punishment newPunishment = HttpUtil.createPunishment(punishment);
+	public CompletableFuture<Punishment> createPunishment(final Punishment punishment) throws Exception {
+		final Punishment newPunishment = HttpUtil.createPunishment(punishment).orElse(null);
 
 		if (newPunishment == null) return CompletableFuture.supplyAsync(() -> punishment);
 
@@ -53,36 +48,43 @@ public final class PunishmentManager {
 	 * @param uuid           The UUID of the player.
 	 * @param punishmentType The type of punishment to retrieve.
 	 * @return An active punishment object, or null if none is found.
-	 * @throws URISyntaxException   If the URI syntax is incorrect.
-	 * @throws IOException          If an IO error occurs.
-	 * @throws InterruptedException If the operation is interrupted.
+	 * @throws Exception If any exception happens.
 	 */
-	public Optional<Punishment> getActivePunishment(final UUID uuid, final PunishmentType punishmentType) throws URISyntaxException, IOException, InterruptedException {
+	public CompletableFuture<Punishment> getActivePunishment(final UUID uuid, final PunishmentType punishmentType) throws Exception {
 		Punishment punishment = cacheConcurrentMap.get(punishmentType).getIfPresent(uuid);
 
 		if (punishment != null) {
-			return Optional.empty();
+			final Punishment finalPunishment = punishment;
+			return CompletableFuture.supplyAsync(() -> finalPunishment);
 		}
 
-		punishment = HttpUtil.getActivePunishment(uuid, punishmentType);
+		punishment = HttpUtil.getActivePunishment(uuid, punishmentType).orElse(null);
 
 		if (punishment != null) {
-			addPunishmentToCache(punishment);
-			return Optional.of(punishment);
+			final Punishment finalPunishment = punishment;
+			addPunishmentToCache(finalPunishment);
+			return CompletableFuture.supplyAsync(() -> finalPunishment);
 		}
 
-		return Optional.empty();
+		return CompletableFuture.supplyAsync(() -> null);
 	}
 
-	public Optional<Punishment> getPunishmentById(final PunishmentId punishmentId) throws URISyntaxException, IOException, InterruptedException {
-		final Punishment punishment = HttpUtil.getPunishmentById(punishmentId);
+	/**
+	 * Retrieves a punishment by id.
+	 * It always fetches it from the remote server.
+	 *
+	 * @param punishmentId The id of the punishment.
+	 * @return An active punishment, or null if none is found.
+	 * @throws Exception If any exception happens.
+	 */
+	public CompletableFuture<Punishment> getPunishmentById(final PunishmentId punishmentId) throws Exception {
+		final Punishment punishment = HttpUtil.getPunishmentById(punishmentId).orElse(null);
 
 		if (punishment != null) {
 			addPunishmentToCache(punishment);
-			return Optional.of(punishment);
-		} else {
-			return Optional.empty();
 		}
+
+		return CompletableFuture.supplyAsync(() -> punishment);
 	}
 
 	private void addPunishmentToCache(@NonNull final Punishment punishment) {

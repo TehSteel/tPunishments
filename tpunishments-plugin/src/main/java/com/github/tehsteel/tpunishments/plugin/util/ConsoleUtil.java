@@ -6,7 +6,6 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 
 public final class ConsoleUtil {
-
 	private ConsoleUtil() {
 	}
 

@@ -5,13 +5,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.util.Arrays;
 
 public final class Constants {
-
 	public static final String PLUGIN_NAME = PunishmentPlugin.getInstance().getName();
 	public static String WEBSITE = "http://localhost:8080";
-	public static String API_KEY = "XXXXX";
-
+	public static String API_KEY = "XXX";
 	public static boolean PAPI_ENABLED = false;
-
 
 	private Constants() {
 	}
@@ -52,8 +49,14 @@ public final class Constants {
 			}
 		});
 
+		// Setup expires locale
+		Arrays.asList(Constants.Messages.Expires.class.getFields()).forEach(field -> {
+			try {
+				field.set(String.class, messagesCon.getString("EXPIRES." + field.getName()));
+			} catch (final IllegalAccessException ignore) {
+			}
+		});
 
-		System.out.println(settingsCon.getString("WEBSITE"));
 		WEBSITE = settingsCon.getString("WEBSITE");
 		API_KEY = settingsCon.getString("API_KEY");
 	}
@@ -99,6 +102,17 @@ public final class Constants {
 
 		public static class Report {
 			public static String USAGE = "<red>Correct Usage: /report <player> <reason>";
+		}
+
+		public static class Expires {
+			public static String NEVER = "NEVER";
+			public static String YEARS = "Years";
+			public static String MONTHS = "Months";
+			public static String WEEKS = "Weeks";
+			public static String DAYS = "Days";
+			public static String HOURS = "Hours";
+			public static String MINUTES = "Minutes";
+			public static String SECONDS = "Seconds";
 		}
 	}
 }

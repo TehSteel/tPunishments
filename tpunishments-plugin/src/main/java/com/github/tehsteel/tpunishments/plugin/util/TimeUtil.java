@@ -1,4 +1,6 @@
-package com.github.tehsteel.tpunishments.core.util;
+package com.github.tehsteel.tpunishments.plugin.util;
+
+import com.github.tehsteel.tpunishments.plugin.Constants;
 
 public final class TimeUtil {
 
@@ -29,7 +31,7 @@ public final class TimeUtil {
 
 	public static String fromMillisToString(final long millis) {
 		if (millis < 0) {
-			return "Never";
+			return Constants.Messages.Expires.NEVER;
 		}
 
 		long remainingMillis = millis;
@@ -50,25 +52,25 @@ public final class TimeUtil {
 		final StringBuilder result = new StringBuilder();
 
 		if (years > 0) {
-			result.append(years).append(" Years");
+			result.append(years).append(" ").append(Constants.Messages.Expires.YEARS);
 		}
 		if (months > 0) {
-			result.append(months).append(" Months");
+			result.append(months).append(" ").append(Constants.Messages.Expires.MONTHS);
 		}
 		if (weeks > 0) {
-			result.append(weeks).append(" Weeks");
+			result.append(weeks).append(" ").append(Constants.Messages.Expires.WEEKS);
 		}
 		if (days > 0) {
-			result.append(days).append(" Days");
+			result.append(days).append(" ").append(Constants.Messages.Expires.DAYS);
 		}
 		if (hours > 0) {
-			result.append(hours).append(" Hours");
+			result.append(hours).append(" ").append(Constants.Messages.Expires.HOURS);
 		}
 		if (minutes > 0) {
-			result.append(minutes).append(" Minutes");
+			result.append(minutes).append(" ").append(Constants.Messages.Expires.MINUTES);
 		}
 		if (seconds > 0) {
-			result.append(seconds).append(" Seconds");
+			result.append(seconds).append(" ").append(Constants.Messages.Expires.SECONDS);
 		}
 
 		return result.toString();

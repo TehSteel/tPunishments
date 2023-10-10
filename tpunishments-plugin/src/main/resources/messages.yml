@@ -1,5 +1,6 @@
 # Uses MiniMessage lib
 # https://docs.advntr.dev/minimessage/format.html
+# PAPI is supported
 MAIN:
   PREFIX: "<gray>[<aqua>tPunishments<gray>]"
   NO_PERMISSION: "<red>You don't have permission to use this command."
@@ -27,3 +28,12 @@ MUTE:
   MUTED: "<red>You're muted for %reason% expries in %time%<newline>Mute Id: %muteid%"
   UNMUTE_USAGE: "<red>Correct Usage: /mute <player> <time> <reason>"
   UNMUTE_BROADCAST: "<red>%player% has unmuted %target% for %reason%"
+EXPIRES:
+  NEVER: "NEVER"
+  YEARS: "Years"
+  MONTHS: "Months"
+  WEEKS: "Weeks"
+  DAYS: "Days"
+  HOURS: "Hours"
+  MINUTES: "Minutes"
+  SECONDS: "Seconds"

@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
  * This class provides utility methods for players.
  */
 public final class PlayerUtil {
-
 	private PlayerUtil() {
 	}
 
@@ -24,7 +23,7 @@ public final class PlayerUtil {
 		if (Constants.PAPI_ENABLED) {
 			message = PlaceholderAPI.setPlaceholders(player, message);
 		}
-		
+
 		player.sendMessage(MiniMessage.miniMessage().deserialize(message));
 	}
 
