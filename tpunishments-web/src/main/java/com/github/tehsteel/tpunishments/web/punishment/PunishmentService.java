@@ -45,13 +45,12 @@ public final class PunishmentService {
 
 		return mongoTemplate.findOne(query, PunishmentEntity.class);
 	}
-
+	
 	public List<PunishmentEntity> getAllPunishments(final UUID uuid) {
 		final Query query = new Query(Criteria.where("punishment.uuid").is(uuid));
 
 		return mongoTemplate.find(query, PunishmentEntity.class);
 	}
-
 
 	public List<PunishmentEntity> getAllPunishments() {
 		return punishmentRepository.findAll();

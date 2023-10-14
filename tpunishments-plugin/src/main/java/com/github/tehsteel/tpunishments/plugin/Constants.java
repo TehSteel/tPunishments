@@ -102,6 +102,8 @@ public final class Constants {
 
 		public static class Report {
 			public static String USAGE = "<red>Correct Usage: /report <player> <reason>";
+			public static String MESSAGE = "Thanks for reporting and keeping the community safe! Report Id: %reportid%";
+			public static String COOLDOWN = "Heya watch your reports.";
 		}
 
 		public static class Expires {

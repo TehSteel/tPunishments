@@ -2,6 +2,8 @@ package com.github.tehsteel.tpunishments.plugin;
 
 import com.github.tehsteel.tpunishments.plugin.command.PunishmentCommand;
 import com.github.tehsteel.tpunishments.plugin.command.punishment.*;
+import com.github.tehsteel.tpunishments.plugin.command.report.ReportCommand;
+import com.github.tehsteel.tpunishments.plugin.command.report.ReportsCommand;
 import com.github.tehsteel.tpunishments.plugin.listener.PlayerListener;
 import com.github.tehsteel.tpunishments.plugin.punishment.PunishmentManager;
 import com.github.tehsteel.tpunishments.plugin.report.ReportManager;
@@ -82,8 +84,11 @@ public final class PunishmentPlugin extends JavaPlugin {
 				new KickCommand(),
 				new MuteCommand(),
 				new UnmuteCommand(),
-				new PunishmentCommand()
+				new PunishmentCommand(),
+				new ReportCommand(),
+				new ReportsCommand()
 		).forEach(this::registerCommand);
+
 
 		ConsoleUtil.log("<green>Registered commands successfully in %s ms.</green>", (System.currentTimeMillis() - startTime));
 	}
@@ -128,7 +133,6 @@ public final class PunishmentPlugin extends JavaPlugin {
 		ConsoleUtil.log("Sending a test request...");
 
 		try {
-
 			final HttpClient client = HttpClient.newHttpClient();
 			final HttpRequest request = HttpRequest.newBuilder()
 					.uri(new URI(String.format("%s/test", Constants.WEBSITE)))
@@ -147,10 +151,9 @@ public final class PunishmentPlugin extends JavaPlugin {
 
 			}
 		} catch (IOException | InterruptedException | URISyntaxException e) {
-			throw new RuntimeException(e);
+			ConsoleUtil.log("<red>There was an error while sending the test request. Error: " + e.getMessage());
 		}
 
 
 	}
-
 }

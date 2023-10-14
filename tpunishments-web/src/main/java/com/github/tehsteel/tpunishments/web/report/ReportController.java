@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @RestController
@@ -75,8 +76,8 @@ public class ReportController {
 		return new ResponseEntity<>(reportService.getReportRepository().findByReportId(reportId), HttpStatus.OK);
 	}
 
-	@GetMapping("/getAllReports")
-	public ResponseEntity<List<ReportEntity>> getAllReports() {
-		return new ResponseEntity<>(reportService.getAllReports(), HttpStatus.OK);
+	@GetMapping("/getReportsByReporter")
+	public ResponseEntity<List<Report>> getReportsByReporter(@RequestParam final UUID uuid) {
+		return new ResponseEntity<>(reportService.getReportsByReporter(uuid), HttpStatus.OK);
 	}
 }

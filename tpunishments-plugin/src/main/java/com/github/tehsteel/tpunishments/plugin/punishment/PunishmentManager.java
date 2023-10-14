@@ -22,7 +22,12 @@ public final class PunishmentManager {
 	private final ConcurrentMap<PunishmentType, Cache<UUID, Punishment>> cacheConcurrentMap = new ConcurrentHashMap<>();
 
 	public PunishmentManager() {
-		Arrays.stream(PunishmentType.values()).forEach(punishmentType -> cacheConcurrentMap.put(punishmentType, CacheBuilder.newBuilder().expireAfterWrite(Duration.ofHours(2)).build()));
+		Arrays.stream(PunishmentType.values()).forEach(punishmentType -> cacheConcurrentMap.put(punishmentType, CacheBuilder.newBuilder()
+				.initialCapacity(100)
+				.maximumSize(1000)
+				.concurrencyLevel(100)
+				.expireAfterWrite(Duration.ofHours(3))
+				.build()));
 	}
 
 	/**
@@ -87,6 +92,11 @@ public final class PunishmentManager {
 		return CompletableFuture.supplyAsync(() -> punishment);
 	}
 
+	/**
+	 * Adds a punishment to the cache, Must be not null.
+	 *
+	 * @param punishment The punishment to add to the cache.
+	 */
 	private void addPunishmentToCache(@NonNull final Punishment punishment) {
 		cacheConcurrentMap.get(punishment.getPunishmentType()).put(punishment.getUuid(), punishment);
 	}

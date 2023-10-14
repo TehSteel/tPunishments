@@ -37,3 +37,8 @@ EXPIRES:
   HOURS: "Hours"
   MINUTES: "Minutes"
   SECONDS: "Seconds"
+REPORT:
+  # %target%
+  # %reason%
+  MESSAGE: "Thanks for reporting and keeping the community safe! Report Id: %reportid%"
+  COOLDOWN: "Heya watch your reports."

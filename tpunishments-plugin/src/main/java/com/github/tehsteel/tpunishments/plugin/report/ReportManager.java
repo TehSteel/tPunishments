@@ -3,19 +3,27 @@ package com.github.tehsteel.tpunishments.plugin.report;
 import com.github.tehsteel.tpunishments.core.report.Report;
 import com.github.tehsteel.tpunishments.core.report.ReportId;
 import com.github.tehsteel.tpunishments.plugin.util.HttpUtil;
+import com.google.common.annotations.Beta;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import lombok.Getter;
 import lombok.NonNull;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 @Getter
 public final class ReportManager {
 
-	private final Cache<ReportId, Report> reportCache = CacheBuilder.newBuilder().expireAfterWrite(Duration.ofHours(1)).build();
-
+	private final Cache<ReportId, Report> reportCache = CacheBuilder.newBuilder()
+			.initialCapacity(100)
+			.maximumSize(1000)
+			.concurrencyLevel(100)
+			.expireAfterWrite(Duration.ofHours(3))
+			.build();
 
 	/**
 	 * creates a new report and returns a CompletableFuture of the created report.
@@ -54,6 +62,39 @@ public final class ReportManager {
 
 		return CompletableFuture.supplyAsync(() -> reportCache.getIfPresent(reportId));
 	}
+
+	/**
+	 * Retrieves a cached list of reports.
+	 *
+	 * @param uuid The reporter uuid.
+	 * @return A list of report.
+	 */
+	@ApiStatus.Experimental
+	@Beta
+	public List<Report> getCachedReports(final UUID uuid) {
+		return reportCache.asMap().values().stream().filter(report -> report.getReporterUuid() == uuid).toList();
+	}
+
+
+	/**
+	 * Retrieves a list of reports from the remote server.
+	 *
+	 * @param uuid The reporter uuid.
+	 * @return A list of report.
+	 */
+	@ApiStatus.Experimental
+	@Beta
+	public CompletableFuture<List<Report>> getReportsByReporter(final UUID uuid) throws Exception {
+		final List<Report> reports = HttpUtil.getReportsByReporter(uuid).orElse(null);
+
+
+		if (reports != null && !reports.isEmpty()) {
+			reports.forEach(this::addReportToCahce);
+		}
+
+		return CompletableFuture.supplyAsync(() -> reports);
+	}
+
 
 	/**
 	 * Adds the specified report to the cached data.

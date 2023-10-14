@@ -7,6 +7,7 @@ import com.github.tehsteel.tpunishments.core.report.Report;
 import com.github.tehsteel.tpunishments.core.report.ReportId;
 import com.github.tehsteel.tpunishments.plugin.Constants;
 import com.google.common.annotations.Beta;
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -233,5 +234,35 @@ public final class HttpUtil {
 		}
 
 		return Optional.of(new Gson().fromJson(response.body(), Report.class));
+	}
+
+	/**
+	 * Retrieves a report by its id from the remote server.
+	 *
+	 * @param uuid The uuid of the report.
+	 * @return A list of report objects, or null if none is found.
+	 * @throws URISyntaxException   If the URI syntax is incorrect.
+	 * @throws IOException          If an IO error occurs.
+	 * @throws InterruptedException If the operation is interrupted.
+	 */
+	public static Optional<List<Report>> getReportsByReporter(final UUID uuid) throws Exception {
+		final HttpClient client = HttpClient.newHttpClient();
+		final HttpRequest request = HttpRequest.newBuilder()
+				.uri(new URI(String.format("%s/api/v1/reports/getReportsByReporter?uuid=%s", Constants.WEBSITE, uuid)))
+				.GET()
+				.header("X-API-KEY", Constants.API_KEY)
+				.timeout(Duration.ofSeconds(10))
+				.build();
+
+
+		final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+		final String body = response.body();
+
+		if (body == null || body.isBlank() || body.isEmpty()) {
+			return Optional.empty();
+		}
+
+		return Optional.of(new Gson().fromJson(response.body(), new TypeToken<List<Report>>() {
+		}.getType()));
 	}
 }
