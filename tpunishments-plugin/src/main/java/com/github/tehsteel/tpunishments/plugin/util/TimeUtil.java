@@ -2,6 +2,9 @@ package com.github.tehsteel.tpunishments.plugin.util;
 
 import com.github.tehsteel.tpunishments.plugin.Constants;
 
+/**
+ * @author DevLeoko
+ */
 public final class TimeUtil {
 
 	private TimeUtil() {

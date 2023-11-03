@@ -2,10 +2,8 @@ package com.github.tehsteel.tpunishments.web.config;
 
 import com.github.tehsteel.tpunishments.web.Constants;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -18,10 +16,6 @@ import reactor.core.publisher.Mono;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig implements WebFilter {
-
-	@Autowired
-	private final Environment environment;
-
 	@Bean
 	public SecurityWebFilterChain springSecurityFilterChain(final ServerHttpSecurity http) {
 		http.csrf(ServerHttpSecurity.CsrfSpec::disable)

@@ -129,6 +129,9 @@ public final class PunishmentPlugin extends JavaPlugin {
 		}
 	}
 
+	/**
+	 * Sends a test request to the specified URL.
+	 */
 	private void performTestRequest() {
 		ConsoleUtil.log("Sending a test request...");
 
@@ -153,7 +156,5 @@ public final class PunishmentPlugin extends JavaPlugin {
 		} catch (IOException | InterruptedException | URISyntaxException e) {
 			ConsoleUtil.log("<red>There was an error while sending the test request. Error: " + e.getMessage());
 		}
-
-
 	}
 }
