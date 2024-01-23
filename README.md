@@ -2,6 +2,7 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![Java Version](https://img.shields.io/badge/Java-17%2B-blue.svg)
+[![Java CI with Maven](https://github.com/TehSteel/tPunishments/actions/workflows/maven.yml/badge.svg)](https://github.com/TehSteel/tPunishments/actions/workflows/maven.yml)
 
 ## Table of Contents
 
